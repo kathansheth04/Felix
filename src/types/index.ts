@@ -144,10 +144,10 @@ export interface KanbanColumn {
 // Valid human-initiated transitions from each status
 export const HUMAN_TRANSITIONS: Partial<Record<TicketStatus, TicketStatus[]>> = {
   BACKLOG: ['TODO'],
-  TODO: ['IN_PROGRESS', 'BACKLOG'],
+  TODO: ['IN_PROGRESS', 'BACKLOG', 'BLOCKED'],
   IN_PROGRESS: ['TODO'],
   QUEUED: ['TODO'],
-  DEV_COMPLETE: ['IN_REVIEW', 'DONE', 'TODO'],
+  DEV_COMPLETE: ['IN_REVIEW', 'DONE', 'TODO', 'BLOCKED'],
   BLOCKED: ['TODO', 'DEV_COMPLETE', 'BACKLOG']
 }
 

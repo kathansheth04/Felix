@@ -16,10 +16,10 @@ from __future__ import annotations
 
 HUMAN_TRANSITIONS: dict[str, list[str]] = {
     "BACKLOG": ["TODO"],       # Promote to board
-    "TODO": ["IN_PROGRESS", "BACKLOG"],
+    "TODO": ["IN_PROGRESS", "BACKLOG", "BLOCKED"],   # BLOCKED for logistical reasons
     "IN_PROGRESS": ["TODO"],
     "QUEUED": ["TODO"],
-    "DEV_COMPLETE": ["IN_REVIEW", "DONE", "TODO"],
+    "DEV_COMPLETE": ["IN_REVIEW", "DONE", "TODO", "BLOCKED"],  # BLOCKED for logistical reasons
     "BLOCKED": ["TODO", "DEV_COMPLETE", "BACKLOG"],  # DEV_COMPLETE retry; BACKLOG send back
     # IN_REVIEW → (agent only)
     # DONE → (terminal)
