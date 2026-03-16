@@ -1,0 +1,35 @@
+node_modules/
+out/
+dist/
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.pyc
+
+# Environment
+.env
+
+# Database (runtime data — not tracked)
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Build outputs
+out/
+dist/
+build/
+
+# Editor / IDE
+.cursor/
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*

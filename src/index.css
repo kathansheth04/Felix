@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ─── Vercel dark: near-black bg, white text, blue accent (#0070F3) ─────── */
+    --background: 0 0% 2%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Primary: muted Vercel blue */
+    --primary: 214 50% 52%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary / muted — dark grays */
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 8%;
+    --muted-foreground: 0 0% 48%;
+    --accent: 0 0% 11%;
+    --accent-foreground: 0 0% 98%;
+
+    /* Semantic */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 4%;
+    --violet: 263 70% 58%;
+    --teal: 173 80% 40%;
+
+    --border: 0 0% 11%;
+    --input: 0 0% 8%;
+    --ring: 214 50% 52%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground text-sm;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    letter-spacing: -0.01em;
+  }
+  code, .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, [tabindex="0"]:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+  }
+}
+
+.bg-canvas {
+  background-color: hsl(var(--background));
+  background-image:
+    radial-gradient(ellipse 100% 50% at 90% 0%, hsl(214 50% 52% / 0.05), transparent 50%),
+    radial-gradient(ellipse 80% 40% at 10% 100%, hsl(214 50% 52% / 0.025), transparent 50%);
+}
+
+/* Home / projects list — single-color gradient */
+.bg-home-gradient {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    hsl(214 50% 52% / 0.15),
+    transparent 55%
+  ),
+  hsl(0 0% 2%);
+}
+
+/* Logs empty state — matches home gradient */
+.bg-logs-empty-gradient {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    hsl(214 50% 52% / 0.15),
+    transparent 55%
+  ),
+  hsl(0 0% 2%);
+}
+
+/* Backlog screen — same gradient treatment */
+.bg-backlog-gradient {
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    hsl(214 50% 52% / 0.15),
+    transparent 55%
+  ),
+  hsl(0 0% 2%);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-status-pulse {
+  animation: status-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Project card hover — lift + shadow (bypasses overflow/Tailwind issues) */
+.hover-lift-card {
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+}
+.hover-lift-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.5);
+}
