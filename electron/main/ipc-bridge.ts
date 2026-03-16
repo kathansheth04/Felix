@@ -121,7 +121,12 @@ export function startPythonBackend(getWindow: WindowGetter): void {
   if (creds.git_email) { env['GIT_AUTHOR_EMAIL']   = creds.git_email; env['GIT_COMMITTER_EMAIL'] = creds.git_email }
 
   const pythonBin = process.platform === 'win32' ? 'python' : 'python3'
+  const appPath = app.getAppPath()
+  const cwd = app.isPackaged
+    ? join(appPath, '..', 'app.asar.unpacked')
+    : appPath
   pythonProcess = spawn(pythonBin, ['-m', 'backend.server'], {
+    cwd,
     env,
     stdio: ['pipe', 'pipe', 'pipe']
   })
