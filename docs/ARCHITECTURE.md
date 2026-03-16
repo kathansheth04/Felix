@@ -356,7 +356,7 @@ Enqueue asyncio task (awaits Semaphore if concurrency full → QUEUED)
           → if git pull fails: release lock → ticket → BLOCKED (blocked_reason = GIT_ERROR) → abort
       → Create worktree if not exists:
           → if branch already exists (stale from a previous crashed run): delete stale worktree + branch first
-          → git worktree add -b ticket-{id} main
+          → git worktree add -b {ticket_id} main  (branch name = ticket id)
   → Release repo lock
   → Install dependencies inside worktree (npm install / equivalent)
   → Inject .claude/commands/ into worktree
@@ -474,7 +474,7 @@ async for message in query(prompt=prompt, options=options):
 **Security Boundary:**
 - The host OS user account is the security boundary — no container isolation
 - SDK `cwd` is scoped to the worktree directory
-- `ANTHROPIC_API_KEY` and `GITHUB_TOKEN` are host environment variables, inherited by the SDK process
+- `ANTHROPIC_API_KEY` and `GITHUB_TOKEN` are set via the app Settings UI (stored in userData) and passed to the SDK process when it spawns
 
 **AgentRuntime Interface:**
 ```python
@@ -590,7 +590,7 @@ Output NEEDS_HUMAN sentinel immediately if you encounter:
 Do not guess. Do not proceed past a genuine blocker.
 
 FINAL OUTPUT — output exactly one as your last line, then exit:
-{"status": "COMPLETED", "pr_url": "...", "pr_number": 123, "branch": "ticket-{id}"}
+{"status": "COMPLETED", "pr_url": "...", "pr_number": 123, "branch": "{ticket_id}"}
 {"status": "FAILED", "reason": "..."}
 {"status": "NEEDS_HUMAN", "reason": "..."}
 ```
@@ -919,11 +919,7 @@ Git 2.5+             — required for git worktree support
 curl                 — GitHub REST API fallback (built-in on macOS/Linux)
 ```
 
-**Environment Variables (host machine, never stored in app):**
-```
-GITHUB_TOKEN=ghp_xxxxxxxxxxxx        # PAT with repo + pull_requests scopes
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
-```
+**Credentials:** Configure GitHub token and Anthropic API key in the app Settings UI. Stored in userData (restricted permissions); passed to the Python backend when it spawns. Never stored in SQLite or config files.
 
 ---
 
@@ -959,7 +955,7 @@ ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
 - Revision cycle system context (branch, PR, comments) is injected by runner into prompt — not stored on ticket
 - pr_url and pr_number are stored directly on the tickets table — set on COMPLETED sentinel
 - default_branch is a project-level setting — /create-pr never hardcodes the base branch
-- Credentials live in host environment variables — never stored in SQLite or app config
+- Credentials are set via app Settings UI, stored in userData — never stored in SQLite or app config
 - GitHub API calls include retry logic with exponential backoff
 - Max 3 implement/review cycles per session enforced in main agent prompt
 - On app startup, runner recovers all IN_PROGRESS executions to BLOCKED/CRASHED

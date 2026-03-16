@@ -39,7 +39,14 @@ function createWindow(): void {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // Restore full PATH on macOS — GUI apps get minimal PATH and miss Homebrew binaries.
+  // fix-path is ESM-only, so we use dynamic import (require() fails for ESM in bundled app).
+  if (process.platform !== 'win32') {
+    const { default: fixPath } = await import('fix-path')
+    fixPath()
+  }
+
   electronApp.setAppUserModelId('com.felix.app')
 
   app.on('browser-window-created', (_, window) => {

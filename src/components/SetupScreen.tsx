@@ -27,11 +27,8 @@ export function SetupScreen() {
           />
         </div>
 
-        <div className="text-sm text-muted-foreground space-y-2">
-          <p className="font-medium">Set these environment variables on your host machine:</p>
-          <pre className="bg-secondary/60 rounded-lg p-4 text-xs font-mono border border-border/40">
-            {`GITHUB_TOKEN=ghp_xxxxxxxxxxxx\nANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx`}
-          </pre>
+        <div className="text-sm text-muted-foreground">
+          <p>After installing the dependencies above, open <strong>Settings</strong> (gear icon) to configure your GitHub token and Anthropic API key.</p>
         </div>
 
         <button

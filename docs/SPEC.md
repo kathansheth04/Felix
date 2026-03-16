@@ -30,7 +30,7 @@ When a ticket is moved to **In Progress**, the Claude Agent SDK begins implement
 
 ## Why Desktop
 
-This system is inherently local — it manages git worktrees on the host filesystem, invokes the Claude Agent SDK as an in-process async call, and runs test commands in the local environment. A desktop app (Electron) gives direct access to all of these without the complexity of Docker containers, volume mounts, or containerized networking. The result is a dramatically simpler deployment: install the app, set two environment variables, and run.
+This system is inherently local — it manages git worktrees on the host filesystem, invokes the Claude Agent SDK as an in-process async call, and runs test commands in the local environment. A desktop app (Electron) gives direct access to all of these without the complexity of Docker containers, volume mounts, or containerized networking. The result is a dramatically simpler deployment: install the app, configure credentials in Settings, and run.
 
 ---
 
@@ -138,13 +138,7 @@ claude-agent-sdk     — pip install claude-agent-sdk (bundles Claude Code CLI)
 Git 2.5+             — required for git worktree support
 ```
 
-**Environment variables (set on host machine):**
-```
-GITHUB_TOKEN=ghp_xxxxxxxxxxxx        # PAT — scopes: repo, pull_requests
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
-```
-
-These are read directly from the host environment. They are never stored in the app database or any config file. The Claude Agent SDK inherits `ANTHROPIC_API_KEY` automatically from the process environment.
+**Credentials (set via app UI):** Configure your GitHub token and Anthropic API key in Settings (gear icon). Credentials are stored in app userData (restricted permissions) and never written to SQLite or config files. They are passed to the Python backend when it spawns.
 
 ---
 
@@ -227,7 +221,7 @@ The agent runs in one of two modes, determined by whether an existing PR is asso
 The Claude Agent SDK session communicates its outcome by outputting exactly one structured JSON line as the final TextBlock content before the session completes:
 
 ```json
-{"status": "COMPLETED", "pr_url": "https://github.com/org/repo/pull/123", "pr_number": 123, "branch": "ticket-101"}
+{"status": "COMPLETED", "pr_url": "https://github.com/org/repo/pull/123", "pr_number": 123, "branch": "{ticket_id}"}
 {"status": "FAILED", "reason": "Could not satisfy tests after 3 implement/review cycles"}
 {"status": "NEEDS_HUMAN", "reason": "Acceptance criteria are contradictory — cannot proceed"}
 ```
@@ -349,7 +343,7 @@ A **Sessions** screen in the UI lets engineers observe agent executions in real 
 
 - Authentication via **Personal Access Token (PAT)**
 - Required PAT scopes: `repo`, `pull_requests`
-- PAT stored as host environment variable — never in SQLite or app config
+- PAT set via app Settings UI — stored in userData; never in SQLite or app config
 - PAT embedded in remote URL for git push/pull authentication:
   `https://x-access-token:{GITHUB_TOKEN}@github.com/owner/repo.git`
 - All GitHub API calls use `httpx` — `gh` CLI and `curl` are never used
@@ -373,14 +367,9 @@ The target repo is cloned **once per project** on the host machine. Git worktree
 
 ---
 
-## Environment Variables
+## Credentials
 
-Environment variables are set on the host machine and inherited by the Claude Agent SDK when invoked. They are never stored in SQLite or any config file.
-
-```
-GITHUB_TOKEN=ghp_xxxxxxxxxxxx        # PAT with repo + pull_requests scopes
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
-```
+GitHub token and Anthropic API key are configured through the app Settings UI. Credentials are stored in app userData (restricted permissions) and passed to the Python backend when it spawns. They are never stored in SQLite or config files.
 
 ---
 

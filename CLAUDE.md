@@ -80,7 +80,7 @@ These rules are copied from `docs/ARCHITECTURE.md` §15 for fast reference. The 
 - Worktrees persist for the lifetime of a ticket — created on first `IN_PROGRESS`, deleted on `DONE` or `TODO`
 - All GitHub API calls use `httpx` with `GITHUB_TOKEN` — the `gh` CLI and `curl` are never used
 - `additional_information` is human-written only — the system never writes to it
-- Credentials live in host environment variables — never stored in SQLite or config files
+- Credentials are set via app Settings UI, stored in userData — never stored in SQLite or config files
 - Max 3 concurrent executions enforced by asyncio Semaphore
 
 ---
@@ -111,7 +111,7 @@ These rules are copied from `docs/ARCHITECTURE.md` §15 for fast reference. The 
 The Claude Agent SDK session outputs exactly one JSON line as its final TextBlock:
 
 ```json
-{"status": "COMPLETED", "pr_url": "https://github.com/org/repo/pull/123", "pr_number": 123, "branch": "ticket-abc12345"}
+{"status": "COMPLETED", "pr_url": "https://github.com/org/repo/pull/123", "pr_number": 123, "branch": "{ticket_id}"}
 {"status": "FAILED", "reason": "Could not satisfy tests after 3 implement/review cycles"}
 {"status": "NEEDS_HUMAN", "reason": "Acceptance criteria are contradictory"}
 ```
@@ -142,8 +142,4 @@ npm run typecheck
 pip install -r requirements.txt
 ```
 
-**Environment variables (set on host machine, never stored in app):**
-```
-GITHUB_TOKEN=ghp_xxxxxxxxxxxx
-ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxx
-```
+**Credentials:** Configure in app Settings (gear icon). Stored in userData; passed to Python backend when it spawns.

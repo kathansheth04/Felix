@@ -86,7 +86,7 @@ export function GlobalSettings() {
         <div className="space-y-2">
           <h2 className="text-lg font-semibold tracking-tight">Credentials</h2>
           <p className="text-sm text-muted-foreground">
-            Stored encrypted on this machine. Shared across all projects.
+            Stored on this machine. Shared across all projects.
             The agent backend restarts automatically when you save.
           </p>
         </div>

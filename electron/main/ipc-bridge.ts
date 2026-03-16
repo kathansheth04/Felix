@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, safeStorage } from 'electron'
+import { app, ipcMain, BrowserWindow } from 'electron'
 import { spawn, ChildProcess } from 'child_process'
 import { randomUUID } from 'crypto'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
@@ -11,7 +11,8 @@ let pythonProcess: ChildProcess | null = null
 let isShuttingDown = false
 let windowGetter: WindowGetter = () => null
 
-// ─── Credential Storage (safeStorage + userData file) ────────────────────────
+// ─── Credential Storage (userData, restricted permissions) ────────────────────
+// Stored as JSON in userData with 0o600 — no Keychain prompt, still user-private.
 
 interface StoredCredentials {
   anthropic_api_key: string
@@ -20,26 +21,27 @@ interface StoredCredentials {
   git_email: string
 }
 
+const CREDENTIALS_MODE = 0o600
+
 function credentialsPath(): string {
-  return join(app.getPath('userData'), 'credentials.enc')
+  return join(app.getPath('userData'), 'credentials.json')
 }
 
 function loadCredentials(): StoredCredentials {
+  const empty = { anthropic_api_key: '', github_token: '', git_name: '', git_email: '' }
   try {
-    if (!existsSync(credentialsPath())) return { anthropic_api_key: '', github_token: '', git_name: '', git_email: '' }
-    const encrypted = readFileSync(credentialsPath())
-    const decrypted = safeStorage.decryptString(encrypted)
-    return { anthropic_api_key: '', github_token: '', git_name: '', git_email: '', ...JSON.parse(decrypted) }
+    if (!existsSync(credentialsPath())) return empty
+    const data = JSON.parse(readFileSync(credentialsPath(), 'utf-8'))
+    return { ...empty, ...data }
   } catch {
-    return { anthropic_api_key: '', github_token: '', git_name: '', git_email: '' }
+    return empty
   }
 }
 
 function saveCredentials(creds: Partial<StoredCredentials>): void {
   const existing = loadCredentials()
   const updated = { ...existing, ...creds }
-  const encrypted = safeStorage.encryptString(JSON.stringify(updated))
-  writeFileSync(credentialsPath(), encrypted)
+  writeFileSync(credentialsPath(), JSON.stringify(updated), { mode: CREDENTIALS_MODE })
 }
 
 // ─── GitHub API Helper ────────────────────────────────────────────────────────
@@ -82,9 +84,7 @@ function githubGet(path: string, token: string): Promise<unknown> {
   })
 }
 
-// ─── Credential Storage (safeStorage + userData file) ────────────────────────
-
-// Pending JSON-RPC requests awaiting Python response, keyed by request ID
+// ─── Pending JSON-RPC requests awaiting Python response, keyed by request ID
 const pendingRequests = new Map<string, { resolve: (value: unknown) => void; reject: (reason: Error) => void }>()
 
 // Write a JSON-RPC request to Python stdin

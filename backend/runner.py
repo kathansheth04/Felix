@@ -836,7 +836,7 @@ class RunnerService:
                     await self._fail(ticket_id, execution_id, "BLOCKED", "GIT_ERROR", str(exc))
                     return
 
-                branch_name = ticket.get("branch_name") or f"ticket-{ticket_id[:8]}"
+                branch_name = ticket.get("branch_name") or ticket_id
                 worktree_path = self._git.worktree_path(project["repo_url"], ticket_id)
                 await self._log(ticket_id, execution_id, f"[system] Setting up worktree — branch: {branch_name}")
                 await self._git.ensure_worktree(repo_main, worktree_path, branch_name, project["default_branch"])
