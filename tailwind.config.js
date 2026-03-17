@@ -101,6 +101,26 @@ module.exports = {
         'rail-enter': {
           '0%': { opacity: '0', transform: 'translateX(-8px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' }
+        },
+        'felix-mark-in': {
+          '0%': { opacity: '0', transform: 'translateY(2px) scale(0.96)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
+        },
+        'felix-mark-out': {
+          '0%': { opacity: '1', transform: 'scale(1)' },
+          '100%': { opacity: '0', transform: 'scale(1.14)' }
+        },
+        'felix-splash-out': {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' }
+        },
+        'felix-home-title-in': {
+          '0%': { opacity: '0', transform: 'translateY(3px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        'felix-splash-hint-in': {
+          '0%': { opacity: '0', transform: 'translateY(2px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
         }
       },
       animation: {
@@ -112,7 +132,15 @@ module.exports = {
         'scale-in': 'scale-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) both',
         'page-enter': 'page-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) both',
         'overlay-enter': 'overlay-enter 150ms ease-out both',
-        'rail-enter': 'rail-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) both'
+        'rail-enter': 'rail-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-mark-in': 'felix-mark-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-mark-out': 'felix-mark-out 360ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-splash-out': 'felix-splash-out 240ms ease-out both',
+        'felix-home-title-in': 'felix-home-title-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-mark-in-brief': 'felix-mark-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-mark-out-brief': 'felix-mark-out 260ms cubic-bezier(0.16, 1, 0.3, 1) both',
+        'felix-splash-out-brief': 'felix-splash-out 180ms ease-out both',
+        'felix-splash-hint-in': 'felix-splash-hint-in 220ms cubic-bezier(0.16, 1, 0.3, 1) both'
       },
       animationDelay: {
         '100': '100ms',

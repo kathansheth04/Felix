@@ -119,7 +119,9 @@ export function HomePage({
     <div className="h-full flex flex-col bg-home-gradient">
       {/* Header: title + settings */}
       <div className="shrink-0 px-5 pt-6 pb-4 border-b border-border/50 flex items-center justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight">Felix</h1>
+        <h1 className="text-3xl font-semibold tracking-tight animate-felix-home-title-in [animation-delay:120ms] motion-reduce:animate-none">
+          Felix
+        </h1>
         <button
           onClick={onOpenSettings}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"

@@ -73,6 +73,14 @@
     radial-gradient(ellipse 80% 40% at 10% 100%, hsl(214 50% 52% / 0.025), transparent 50%);
 }
 
+/* Splash — slightly more intentional than canvas (same palette) */
+.bg-splash {
+  background-color: hsl(var(--background));
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 35%, hsl(214 50% 52% / 0.10), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 10% 100%, hsl(214 50% 52% / 0.04), transparent 55%);
+}
+
 /* Home / projects list — single-color gradient */
 .bg-home-gradient {
   background: radial-gradient(

@@ -1,0 +1,5 @@
+2026-03-16
+- Phase 1 splash: replaced “Starting up…” placeholder with a Felix wordmark splash overlay that reveals, then scales/fades into the home screen (reduced-motion safe).
+- Phase 2 refinement: splash uses a dedicated `bg-splash` treatment and the Home “Felix” title has a subtle entrance to feel continuous.
+- Phase 3 polish: brief variant on subsequent launches and a “Preparing workspace…” hint if startup takes longer than 1.5s.
+

@@ -8,11 +8,28 @@ import { HomePage } from './components/HomePage'
 import { CreateProjectDialog } from './components/CreateProjectDialog'
 import { GlobalSettings } from './components/GlobalSettings'
 import { SetupScreen } from './components/SetupScreen'
+import { SplashOverlay } from './components/SplashOverlay'
 import type { Project, ProjectView, TicketStatusChangedEvent } from './types'
 import { BLOCKED_REASON_LABEL } from './types'
 import { ChevronLeft } from 'lucide-react'
 import { Toaster } from './components/ui/toaster'
 import { toast } from './components/ui/use-toast'
+
+function getHasSeenSplash(): boolean {
+  try {
+    return window.sessionStorage.getItem('felix_has_seen_splash') === '1'
+  } catch {
+    return false
+  }
+}
+
+function setHasSeenSplash() {
+  try {
+    window.sessionStorage.setItem('felix_has_seen_splash', '1')
+  } catch {
+    // non-fatal
+  }
+}
 
 export default function App() {
   const [mainView, setMainView] = useState<'home' | 'project'>('home')
@@ -22,6 +39,9 @@ export default function App() {
   const [projects, setProjects] = useState<Project[]>([])
   const [activeProject, setActiveProject] = useState<Project | null>(null)
   const [dependenciesOk, setDependenciesOk] = useState<boolean | null>(null)
+  const [hasSeenSplash, setHasSeenSplashState] = useState<boolean>(() => getHasSeenSplash())
+  const [splashPhase, setSplashPhase] = useState<'intro' | 'outro' | 'done'>('intro')
+  const [splashHint, setSplashHint] = useState<string | null>(null)
   const [ticketVersion, setTicketVersion] = useState(0)
   const [createOpen, setCreateOpen] = useState(false)
 
@@ -33,6 +53,31 @@ export default function App() {
       setDependenciesOk(ok)
     }).catch(() => setDependenciesOk(false))
   }, [])
+
+  useEffect(() => {
+    if (dependenciesOk !== null) return
+    const t = window.setTimeout(() => setSplashHint('Preparing workspace…'), 1500)
+    return () => window.clearTimeout(t)
+  }, [dependenciesOk])
+
+  useEffect(() => {
+    if (!dependenciesOk || splashPhase !== 'intro') return
+    const holdMs = hasSeenSplash ? 180 : 280
+    const t = window.setTimeout(() => setSplashPhase('outro'), holdMs)
+    return () => window.clearTimeout(t)
+  }, [dependenciesOk, hasSeenSplash, splashPhase])
+
+  useEffect(() => {
+    if (splashPhase !== 'outro') return
+    const t = window.setTimeout(() => setSplashPhase('done'), hasSeenSplash ? 320 : 420)
+    return () => window.clearTimeout(t)
+  }, [hasSeenSplash, splashPhase])
+
+  useEffect(() => {
+    if (splashPhase !== 'done') return
+    setHasSeenSplash()
+    setHasSeenSplashState(true)
+  }, [splashPhase])
 
   useEffect(() => {
     if (dependenciesOk) {
@@ -120,98 +165,96 @@ export default function App() {
       .catch(() => { /* non-fatal */ })
   }
 
-  if (dependenciesOk === null) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-canvas">
-        <div className="text-muted-foreground text-sm font-medium animate-pulse">Starting up…</div>
-      </div>
-    )
-  }
-
-  if (!dependenciesOk) {
-    return <SetupScreen />
-  }
-
   return (
     <div className="flex flex-col h-screen bg-canvas">
       <div className="h-8 drag-region shrink-0" />
       <div className="flex flex-1 min-h-0">
-        {/* Sidebar — only when viewing a project */}
-        {mainView === 'project' && (
-          <div className="animate-rail-enter">
-          <ProjectRail
-            activeProject={activeProject}
-            projectView={projectView}
-            onSetProjectView={(view) => {
-              setProjectView(view)
-              setMainView('project')
-            }}
-            onOpenGlobalSettings={openGlobalSettings}
-          />
-          </div>
-        )}
+        {dependenciesOk ? (
+          <>
+            {/* Sidebar — only when viewing a project */}
+            {mainView === 'project' && (
+              <div className="animate-rail-enter">
+              <ProjectRail
+                activeProject={activeProject}
+                projectView={projectView}
+                onSetProjectView={(view) => {
+                  setProjectView(view)
+                  setMainView('project')
+                }}
+                onOpenGlobalSettings={openGlobalSettings}
+              />
+              </div>
+            )}
 
-        {/* Main content */}
-        <main className="flex-1 min-w-0 overflow-hidden flex flex-col">
-        {mainView === 'project' && (
-          <div className="shrink-0 flex items-center h-10 px-4 border-b border-border/50 bg-background/80">
-            <button
-              onClick={goHome}
-              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-              title="Back to projects"
-            >
-              <ChevronLeft className="h-4 w-4" />
-              Projects
-            </button>
-          </div>
-        )}
-        <div key={mainView === 'home' ? 'home' : `project-${projectView}`} className="flex-1 min-h-0 animate-page-enter overflow-hidden">
-        {mainView === 'home' ? (
-          <HomePage
-            projects={projects}
-            onSelectProject={openProject}
-            onCreateClick={() => setCreateOpen(true)}
-            onOpenSettings={openGlobalSettings}
-          />
-        ) : activeProject && projectView === 'board' ? (
-          <KanbanBoard
-            project={activeProject}
-            ticketVersion={ticketVersion}
-            onNoProject={() => setProjectView('settings')}
-            onViewLogs={(ticketId) => {
-              setFocusedTicketId(ticketId)
-              setProjectView('sessions')
-            }}
-          />
-        ) : activeProject && projectView === 'backlog' ? (
-          <BacklogScreen project={activeProject} ticketVersion={ticketVersion} />
-        ) : activeProject && projectView === 'sessions' ? (
-          <SessionsScreen
-            project={activeProject}
-            focusedTicketId={focusedTicketId}
-            onFocusConsumed={() => setFocusedTicketId(null)}
-          />
-        ) : activeProject ? (
-          <ProjectSettings
-            project={activeProject}
-            onProjectSaved={handleProjectUpdated}
-            onProjectDeleted={handleProjectDeleted}
-          />
+            {/* Main content */}
+            <main className="flex-1 min-w-0 overflow-hidden flex flex-col">
+            {mainView === 'project' && (
+              <div className="shrink-0 flex items-center h-10 px-4 border-b border-border/50 bg-background/80">
+                <button
+                  onClick={goHome}
+                  className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  title="Back to projects"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  Projects
+                </button>
+              </div>
+            )}
+            <div key={mainView === 'home' ? 'home' : `project-${projectView}`} className="flex-1 min-h-0 animate-page-enter overflow-hidden">
+            {mainView === 'home' ? (
+              <HomePage
+                projects={projects}
+                onSelectProject={openProject}
+                onCreateClick={() => setCreateOpen(true)}
+                onOpenSettings={openGlobalSettings}
+              />
+            ) : activeProject && projectView === 'board' ? (
+              <KanbanBoard
+                project={activeProject}
+                ticketVersion={ticketVersion}
+                onNoProject={() => setProjectView('settings')}
+                onViewLogs={(ticketId) => {
+                  setFocusedTicketId(ticketId)
+                  setProjectView('sessions')
+                }}
+              />
+            ) : activeProject && projectView === 'backlog' ? (
+              <BacklogScreen project={activeProject} ticketVersion={ticketVersion} />
+            ) : activeProject && projectView === 'sessions' ? (
+              <SessionsScreen
+                project={activeProject}
+                focusedTicketId={focusedTicketId}
+                onFocusConsumed={() => setFocusedTicketId(null)}
+              />
+            ) : activeProject ? (
+              <ProjectSettings
+                project={activeProject}
+                onProjectSaved={handleProjectUpdated}
+                onProjectDeleted={handleProjectDeleted}
+              />
+            ) : (
+              <HomePage
+                projects={projects}
+                onSelectProject={openProject}
+                onCreateClick={() => setCreateOpen(true)}
+                onOpenSettings={openGlobalSettings}
+              />
+            )}
+            </div>
+            <CreateProjectDialog
+              open={createOpen}
+              onOpenChange={setCreateOpen}
+              onCreated={handleProjectCreated}
+            />
+            </main>
+          </>
+        ) : dependenciesOk === false ? (
+          <main className="flex-1 min-w-0 overflow-hidden flex flex-col">
+            <SetupScreen />
+          </main>
         ) : (
-          <HomePage
-            projects={projects}
-            onSelectProject={openProject}
-            onCreateClick={() => setCreateOpen(true)}
-            onOpenSettings={openGlobalSettings}
-          />
+          <main className="flex-1 min-w-0 overflow-hidden flex flex-col" />
         )}
-        </div>
-        <CreateProjectDialog
-          open={createOpen}
-          onOpenChange={setCreateOpen}
-          onCreated={handleProjectCreated}
-        />
-        </main>
       </div>
 
       {/* Global settings overlay */}
@@ -234,6 +277,14 @@ export default function App() {
       )}
 
       <Toaster />
+
+      {(dependenciesOk === null || splashPhase !== 'done') && (
+        <SplashOverlay
+          phase={splashPhase === 'outro' ? 'outro' : 'intro'}
+          variant={hasSeenSplash ? 'brief' : 'full'}
+          hint={dependenciesOk === null ? (splashHint ?? undefined) : undefined}
+        />
+      )}
     </div>
   )
 }

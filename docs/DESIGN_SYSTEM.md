@@ -114,6 +114,14 @@ Design tokens and visual language. All styling must reference these values — n
 | `animate-page-enter` | 180ms | cubic-bezier(0.16,1,0.3,1) | Screen transitions (Board, Backlog, etc.) |
 | `animate-rail-enter` | 180ms | cubic-bezier(0.16,1,0.3,1) | Sidebar on project view |
 | `animate-overlay-enter` | 150ms | ease-out | Modal overlays (API & Credentials) |
+| `animate-felix-mark-in` | 360ms | cubic-bezier(0.16,1,0.3,1) | Splash wordmark reveal |
+| `animate-felix-mark-out` | 360ms | cubic-bezier(0.16,1,0.3,1) | Splash wordmark exit (scale + fade) |
+| `animate-felix-splash-out` | 240ms | ease-out | Splash background fade |
+| `animate-felix-home-title-in` | 260ms | cubic-bezier(0.16,1,0.3,1) | Home “Felix” title entrance |
+| `animate-felix-mark-in-brief` | 200ms | cubic-bezier(0.16,1,0.3,1) | Splash wordmark reveal (subsequent launch) |
+| `animate-felix-mark-out-brief` | 260ms | cubic-bezier(0.16,1,0.3,1) | Splash wordmark exit (subsequent launch) |
+| `animate-felix-splash-out-brief` | 180ms | ease-out | Splash background fade (subsequent launch) |
+| `animate-felix-splash-hint-in` | 220ms | cubic-bezier(0.16,1,0.3,1) | Splash “long start” hint |
 
 ---
 
