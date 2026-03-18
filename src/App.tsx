@@ -61,6 +61,12 @@ export default function App() {
   }, [dependenciesOk])
 
   useEffect(() => {
+    if (dependenciesOk === false) {
+      setSplashPhase('done')
+    }
+  }, [dependenciesOk])
+
+  useEffect(() => {
     if (!dependenciesOk || splashPhase !== 'intro') return
     const holdMs = hasSeenSplash ? 180 : 280
     const t = window.setTimeout(() => setSplashPhase('outro'), holdMs)

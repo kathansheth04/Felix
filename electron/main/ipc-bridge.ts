@@ -120,7 +120,18 @@ export function startPythonBackend(getWindow: WindowGetter): void {
   if (creds.git_name)  { env['GIT_AUTHOR_NAME']    = creds.git_name;  env['GIT_COMMITTER_NAME']  = creds.git_name  }
   if (creds.git_email) { env['GIT_AUTHOR_EMAIL']   = creds.git_email; env['GIT_COMMITTER_EMAIL'] = creds.git_email }
 
-  const pythonBin = process.platform === 'win32' ? 'python' : 'python3'
+  const bundledPython = join(process.resourcesPath, 'python-env', 'python', 'bin', 'python3')
+  const pythonBin = app.isPackaged
+    ? bundledPython
+    : (process.platform === 'win32' ? 'python' : 'python3')
+
+  if (app.isPackaged) {
+    env['PYTHONNOUSERSITE'] = '1'
+    env['PYTHONUNBUFFERED'] = '1'
+    const bundledBinDir = join(process.resourcesPath, 'python-env', 'python', 'bin')
+    const sep = process.platform === 'win32' ? ';' : ':'
+    env['PATH'] = `${bundledBinDir}${sep}${env['PATH'] ?? ''}`
+  }
   const appPath = app.getAppPath()
   const cwd = app.isPackaged
     ? join(appPath, '..', 'app.asar.unpacked')

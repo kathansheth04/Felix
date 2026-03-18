@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
-    "dist": "npm run build && electron-builder",
+    "build-python-env": "./scripts/build-python-env.sh",
+    "dist": "npm run build-python-env && npm run build && electron-builder",
     "generate-icons": "./scripts/generate-icons.sh",
     "preview": "electron-vite preview",
     "lint": "eslint src electron --ext .ts,.tsx",
@@ -65,6 +66,17 @@
     "directories": {
       "output": "dist"
     },
+    "afterPack": "./scripts/after-pack.js",
+    "extraResources": [
+      {
+        "from": "build/python-env",
+        "to": "python-env",
+        "filter": [
+          "**/*",
+          "!include/**"
+        ]
+      }
+    ],
     "files": [
       "out/**/*",
       "backend/**/*",
@@ -78,7 +90,9 @@
     ],
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "category": "public.app-category.developer-tools",
+      "identity": null
     },
     "win": {
       "target": "nsis",
