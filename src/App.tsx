@@ -265,7 +265,7 @@ export default function App() {
       {/* Global settings overlay */}
       {globalSettingsOpen && (
         <div className="fixed inset-0 z-50 flex flex-col bg-background animate-overlay-enter">
-          <div className="drag-region flex items-center gap-4 h-12 px-5 border-b border-border/60 shrink-0 bg-card/30">
+          <div className="drag-region flex items-center gap-4 h-12 pl-20 pr-5 border-b border-border/60 shrink-0 bg-card/30">
             <button
               onClick={closeGlobalSettings}
               className="no-drag flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors shrink-0"

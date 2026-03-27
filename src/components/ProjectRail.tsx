@@ -47,8 +47,8 @@ export function ProjectRail({
 
   return (
     <aside className={cn(widthClass, 'shrink-0 flex flex-col border-r border-border/60 bg-card/40 overflow-hidden transition-[width] duration-200')}>
-      {/* Collapse toggle — top of sidebar */}
-      <div className="shrink-0 border-b border-border/50 py-2 px-2">
+      {/* Collapse toggle — top of sidebar; pt-8 clears macOS traffic-light buttons */}
+      <div className="shrink-0 border-b border-border/50 pb-2 pt-8 px-2">
         <button
           onClick={() => setCollapsed((c) => !c)}
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
