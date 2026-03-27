@@ -40,6 +40,9 @@
 
     --radius: 0.5rem;
 
+    /* ─── Gradient top-of-page blue — brighter in light mode ─────────────────── */
+    --gradient-top: hsl(214 90% 58% / 0.25);
+
     /* ─── Shadows — soft in light mode ───────────────────────────────────────── */
     --shadow-card-hover: 0 4px 24px -4px rgba(0, 0, 0, 0.10);
     --shadow-lift: 0 8px 16px -4px rgba(0, 0, 0, 0.08);
@@ -80,6 +83,9 @@
     --border: 0 0% 11%;
     --input: 0 0% 8%;
     --ring: 214 50% 52%;
+
+    /* ─── Gradient top-of-page blue — softer in dark mode ────────────────────── */
+    --gradient-top: hsl(214 50% 52% / 0.12);
 
     /* ─── Shadows — heavy in dark mode ───────────────────────────────────────── */
     --shadow-card-hover: 0 4px 24px -4px rgba(0, 0, 0, 0.5);
@@ -131,7 +137,7 @@
 .bg-home-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.12),
+    var(--gradient-top),
     transparent 55%
   ),
   hsl(var(--background));
@@ -141,7 +147,7 @@
 .bg-logs-empty-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.12),
+    var(--gradient-top),
     transparent 55%
   ),
   hsl(var(--background));
@@ -151,7 +157,7 @@
 .bg-backlog-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.12),
+    var(--gradient-top),
     transparent 55%
   ),
   hsl(var(--background));
