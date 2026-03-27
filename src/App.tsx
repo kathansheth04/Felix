@@ -173,7 +173,6 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-canvas">
-      <div className="h-8 drag-region shrink-0" />
       <div className="flex flex-1 min-h-0">
         {dependenciesOk ? (
           <>
@@ -195,10 +194,10 @@ export default function App() {
             {/* Main content */}
             <main className="flex-1 min-w-0 overflow-hidden flex flex-col">
             {mainView === 'project' && (
-              <div className="shrink-0 flex items-center h-10 px-4 border-b border-border/50 bg-background/80">
+              <div className="drag-region shrink-0 flex items-center h-10 px-4 border-b border-border/50 bg-background/80">
                 <button
                   onClick={goHome}
-                  className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  className="no-drag flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
                   title="Back to projects"
                 >
                   <ChevronLeft className="h-4 w-4" />
@@ -266,11 +265,10 @@ export default function App() {
       {/* Global settings overlay */}
       {globalSettingsOpen && (
         <div className="fixed inset-0 z-50 flex flex-col bg-background animate-overlay-enter">
-          <div className="h-8 drag-region shrink-0" />
-          <div className="flex items-center gap-4 h-12 px-5 border-b border-border/60 shrink-0 bg-card/30">
+          <div className="drag-region flex items-center gap-4 h-12 px-5 border-b border-border/60 shrink-0 bg-card/30">
             <button
               onClick={closeGlobalSettings}
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors shrink-0"
+              className="no-drag flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors shrink-0"
             >
               <ChevronLeft className="h-4 w-4" />
               Back
