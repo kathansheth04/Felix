@@ -4,7 +4,50 @@
 
 @layer base {
   :root {
-    /* ─── Vercel dark: near-black bg, white text, blue accent (#0070F3) ─────── */
+    /* ─── Light mode — slightly off-white page, white cards ─────────────────── */
+    --background: 0 0% 97%;
+    --foreground: 0 0% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
+
+    /* Primary: Vercel blue, slightly deepened for light-mode legibility */
+    --primary: 214 60% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary / muted — light grays */
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 15%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 10%;
+
+    /* Semantic — slightly darkened for light-mode legibility */
+    --destructive: 0 72% 46%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 71% 32%;
+    --success-foreground: 0 0% 98%;
+    --warning: 38 92% 38%;
+    --warning-foreground: 0 0% 4%;
+    --violet: 263 70% 50%;
+    --teal: 173 80% 32%;
+
+    --border: 0 0% 86%;
+    --input: 0 0% 92%;
+    --ring: 214 60% 45%;
+
+    --radius: 0.5rem;
+
+    /* ─── Shadows — soft in light mode ───────────────────────────────────────── */
+    --shadow-card-hover: 0 4px 24px -4px rgba(0, 0, 0, 0.10);
+    --shadow-lift: 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+    --shadow-hover-lift: 0 12px 24px -4px rgba(0, 0, 0, 0.10);
+  }
+
+  .dark {
+    /* ─── Dark mode — Vercel dark: near-black bg, white text ─────────────────── */
     --background: 0 0% 2%;
     --foreground: 0 0% 100%;
     --card: 0 0% 4%;
@@ -38,7 +81,10 @@
     --input: 0 0% 8%;
     --ring: 214 50% 52%;
 
-    --radius: 0.5rem;
+    /* ─── Shadows — heavy in dark mode ───────────────────────────────────────── */
+    --shadow-card-hover: 0 4px 24px -4px rgba(0, 0, 0, 0.5);
+    --shadow-lift: 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+    --shadow-hover-lift: 0 12px 24px -4px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -85,30 +131,30 @@
 .bg-home-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.15),
+    hsl(214 50% 52% / 0.12),
     transparent 55%
   ),
-  hsl(0 0% 2%);
+  hsl(var(--background));
 }
 
 /* Logs empty state — matches home gradient */
 .bg-logs-empty-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.15),
+    hsl(214 50% 52% / 0.12),
     transparent 55%
   ),
-  hsl(0 0% 2%);
+  hsl(var(--background));
 }
 
 /* Backlog screen — same gradient treatment */
 .bg-backlog-gradient {
   background: radial-gradient(
     ellipse 80% 60% at 50% 0%,
-    hsl(214 50% 52% / 0.15),
+    hsl(214 50% 52% / 0.12),
     transparent 55%
   ),
-  hsl(0 0% 2%);
+  hsl(var(--background));
 }
 
 ::-webkit-scrollbar {
@@ -119,7 +165,7 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
+  background: hsl(var(--border));
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -147,5 +193,5 @@
 }
 .hover-lift-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-hover-lift);
 }
