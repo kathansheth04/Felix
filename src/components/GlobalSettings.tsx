@@ -1,13 +1,24 @@
 import { useState, useEffect } from 'react'
 import type { GitHubUser } from '../types'
-import { Github } from 'lucide-react'
+import { Github, Sun, Moon, Monitor } from 'lucide-react'
 import { Field } from './ui/field'
 import { ErrorBlock } from './ui/error-block'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Separator } from './ui/separator'
+import { useTheme } from '../contexts/ThemeContext'
+import type { Theme } from '../contexts/ThemeContext'
+import { cn } from '../lib/utils'
+
+const THEME_OPTIONS: { value: Theme; label: string; icon: React.ReactNode }[] = [
+  { value: 'light', label: 'Light', icon: <Sun className="h-4 w-4" /> },
+  { value: 'system', label: 'System', icon: <Monitor className="h-4 w-4" /> },
+  { value: 'dark', label: 'Dark', icon: <Moon className="h-4 w-4" /> },
+]
 
 export function GlobalSettings() {
+  const { theme, setTheme } = useTheme()
+
   const [anthropicKey, setAnthropicKey] = useState('')
   const [githubToken, setGithubToken] = useState('')
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null)
@@ -83,6 +94,41 @@ export function GlobalSettings() {
     <div className="h-full overflow-y-auto bg-backlog-gradient">
       <div className="min-h-full flex flex-col justify-center max-w-lg mx-auto p-8 w-full space-y-6">
 
+        {/* ── Appearance ─────────────────────────────────────────────────────── */}
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold tracking-tight">Appearance</h2>
+          <p className="text-sm text-muted-foreground">
+            Choose how Felix looks. System mode follows your device's theme automatically.
+          </p>
+        </div>
+
+        <Separator />
+
+        <div className="space-y-3">
+          <p className="text-sm font-medium">Theme</p>
+          <div className="inline-flex rounded-lg border border-border bg-secondary/40 p-1 gap-1">
+            {THEME_OPTIONS.map(({ value, label, icon }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setTheme(value)}
+                className={cn(
+                  'flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-150',
+                  theme === value
+                    ? 'bg-background text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+                )}
+              >
+                {icon}
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <Separator />
+
+        {/* ── Credentials ────────────────────────────────────────────────────── */}
         <div className="space-y-2">
           <h2 className="text-lg font-semibold tracking-tight">Credentials</h2>
           <p className="text-sm text-muted-foreground">
@@ -153,7 +199,7 @@ export function GlobalSettings() {
 
           {githubUser && !tokenDirty && (
             <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-success/10 border border-success/20">
-              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 shrink-0">
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-foreground/5 shrink-0">
                 <Github className="h-5 w-5 text-foreground" />
               </div>
               <div className="min-w-0 flex-1">
@@ -182,4 +228,3 @@ export function GlobalSettings() {
     </div>
   )
 }
-

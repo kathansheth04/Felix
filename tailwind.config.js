@@ -58,8 +58,8 @@ module.exports = {
       boxShadow: {
         glow: '0 0 24px -6px hsl(214 50% 52% / 0.22)',
         'glow-sm': '0 0 16px -4px hsl(214 50% 52% / 0.15)',
-        'card-hover': '0 4px 24px -4px rgba(0,0,0,0.5)',
-        'lift': '0 8px 16px -4px rgba(0,0,0,0.4)'
+        'card-hover': 'var(--shadow-card-hover)',
+        'lift': 'var(--shadow-lift)'
       },
       transitionDuration: {
         '150': '150ms',
