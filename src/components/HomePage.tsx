@@ -85,7 +85,7 @@ export function HomePage({
   if (projects.length === 0) {
     return (
       <div className="h-full flex flex-col bg-home-gradient">
-        <div className="flex justify-end h-10 px-5 border-b border-border/50 shrink-0 items-center">
+        <div className="drag-region flex justify-end h-10 pl-20 pr-5 border-b border-border/50 shrink-0 items-center">
           <button
             onClick={onOpenSettings}
             className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5"
