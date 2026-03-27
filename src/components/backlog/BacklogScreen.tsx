@@ -45,14 +45,6 @@ export function BacklogScreen({ project, ticketVersion }: BacklogScreenProps) {
 
   return (
     <div className="h-full flex flex-col bg-backlog-gradient">
-      <div className="flex items-center h-10 px-5 border-b border-border/50 shrink-0 bg-background/40">
-        <div className="flex items-baseline gap-2">
-          <h1 className="text-sm font-semibold tracking-tight">Backlog</h1>
-          <span className="text-sm tabular-nums text-muted-foreground">
-            {loading ? '…' : tickets.length}
-          </span>
-        </div>
-      </div>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-3xl mx-auto px-6 py-8">
           {tickets.length === 0 && !loading ? (
