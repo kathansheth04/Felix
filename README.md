@@ -99,7 +99,7 @@ Felix can run up to **3 tickets concurrently**. A 4th ticket moved to In Progres
 
 ## Sessions Viewer
 
-A dedicated **Sessions** screen lets you watch agent activity in real time — every tool use, file edit, and test run is streamed live. You can also replay the full log for completed or blocked sessions.
+A dedicated **Sessions** screen lets you watch agent activity in real time. This means every tool use, file edit, and test run is streamed live. You can also replay the full log for completed or blocked sessions.
 
 ---
 
@@ -109,50 +109,19 @@ Before running Felix, you need:
 
 | Requirement | Notes |
 |---|---|
-| **Python 3.11+** | Required to run the backend |
-| **claude-agent-sdk** | `pip install claude-agent-sdk` — the AI agent runtime |
-| **Git 2.5+** | Required for git worktree support |
 | **Anthropic API Key** | Powers the Claude coding agent |
 | **GitHub Personal Access Token** | Required scopes: `repo`, `pull_requests` |
 
-Felix checks for these on startup and shows a setup screen if anything is missing.
+Felix checks for these on startup and shows a setup screen.
 
 ---
 
 ## Installation
 
-### 1. Clone the repository
+### 1. Download the latest release build for MacOS
 
-```bash
-git clone https://github.com/kathansheth04/felix.git
-cd felix
-```
 
-### 2. Install Node dependencies
-
-```bash
-npm install
-```
-
-### 3. Install Python dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Install the Claude Agent SDK
-
-```bash
-pip install claude-agent-sdk
-```
-
-### 5. Start the app
-
-```bash
-npm run dev
-```
-
-### 6. Configure credentials
+### 2. Configure credentials
 
 Open **Settings** (gear icon) and enter your:
 - **Anthropic API Key** — from [console.anthropic.com](https://console.anthropic.com)
@@ -194,13 +163,11 @@ The agent follows strict TDD rules: tests must fail before implementation starts
 
 | Indicator | Meaning |
 |---|---|
-| ⚠️ **FAILED** | Agent exhausted 3 implement/review cycles |
-| ❓ **NEEDS_HUMAN** | Acceptance criteria are contradictory or the ticket requires clarification |
-| ⏸️ **PAUSED** | Claude usage limit was reached |
-| ⚠️ **CRASHED** | Unexpected agent exit or 15-minute inactivity timeout |
-| ⚠️ **GIT_ERROR** | Git pull failed during setup |
-
-All blocked tickets can be refined and retried — move back to **To Do** after updating the ticket.
+| **FAILED** | Agent exhausted 3 implement/review cycles |
+| **NEEDS_HUMAN** | Acceptance criteria are contradictory or the ticket requires clarification |
+| **PAUSED** | Claude usage limit was reached |
+| **CRASHED** | Unexpected agent exit or 15-minute inactivity timeout |
+| **GIT_ERROR** | Git pull failed during setup |
 
 ---
 
@@ -227,30 +194,6 @@ Moving any **In Progress** or **Dev Complete** ticket back to **To Do** triggers
 | Agent runtime | Claude Agent SDK (`claude-agent-sdk`) |
 | GitHub API | httpx (no `gh` CLI dependency) |
 | IPC | JSON-RPC over stdio between Electron and Python |
-
----
-
-## Development Commands
-
-```bash
-# Start dev mode (hot-reload renderer + Electron)
-npm run dev
-
-# Build for production
-npm run build
-
-# TypeScript type check
-npm run typecheck
-```
-
----
-
-## What Felix Is Not
-
-- **Not a code review tool** — Felix writes code for you to review, it does not review your code
-- **Not a chatbot** — there is no conversational interface; you communicate with the agent through ticket fields
-- **Not a CI/CD system** — Felix runs tests locally in the worktree, not in a CI pipeline (post-MVP feature)
-- **Not a team tool (yet)** — Felix is a single-user desktop app; multi-user server mode is a planned future enhancement
 
 ---
 
