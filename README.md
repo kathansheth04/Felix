@@ -40,7 +40,7 @@ Felix uses a Kanban board with these columns:
 | **Done** | PR merged, task complete | You |
 | **Blocked** | Needs human attention | Agent (on failure) |
 
-Cards show status badges, PR links, and — when blocked — a reason explaining why the agent stopped (e.g., contradictory acceptance criteria, test failures after 3 attempts, usage limit reached).
+Cards show status badges and PR links. When blocked, it shows a reason explaining why the agent stopped (e.g., contradictory acceptance criteria, test failures after 3 attempts, usage limit reached).
 
 ---
 
