@@ -1,6 +1,6 @@
 # Felix
 
-Felix is a desktop application that turns a Kanban board into an autonomous software development pipeline. You create tickets describing engineering tasks, move them to **In Progress**, and an AI coding agent takes over — writing tests, implementing the code, committing the changes, and opening a pull request on GitHub. You come back to review the PR.
+Felix is a desktop application that turns a Kanban board into an autonomous software development pipeline. You create tickets describing engineering tasks, move them to **In Progress**, and an AI coding agent takes over. It writes tests, implementes the code, commits the changes, and opens a pull request on GitHub. You come back to review the PR.
 
 Built with Electron, React, and Python, Felix runs entirely on your local machine with direct access to your filesystem and Git repositories.
 
@@ -10,17 +10,17 @@ Built with Electron, React, and Python, Felix runs entirely on your local machin
 
 When you move a ticket to **In Progress**, Felix:
 
-1. Creates a Git worktree (an isolated branch) for the ticket
+1. Creates a worktree (an isolated branch) for the ticket
 2. Launches an autonomous Claude Agent that follows test-driven development:
    - Explores the codebase to understand context
-   - Writes failing tests derived from the ticket's acceptance criteria
+   - Writes comprehensive tests derived from the ticket's acceptance criteria
    - Implements code until all tests pass
-   - Runs a self-review quality gate
+   - Runs an extensive quality gate
    - Commits the changes and opens a GitHub pull request
 3. Moves the ticket to **Dev Complete** once the PR is open
 4. Streams all agent activity live so you can watch what it's doing
 
-If you leave review comments on the PR, you move the ticket to **In Review** and the agent addresses the comments on the same branch automatically.
+If you leave review comments on the PR, you move the ticket to **In Review** and the agent addresses (and responds to) the comments on the same branch automatically.
 
 You stay in control of what runs, what gets merged, and what gets prioritized. The agent only executes work after you trigger it.
 
