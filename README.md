@@ -148,21 +148,6 @@ Each ticket gets its own Git worktree (`~/felix-kanban/{repo-name}/worktrees/{ti
 
 ---
 
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Desktop shell | Electron |
-| Frontend | React + TypeScript + Vite + TailwindCSS + shadcn/ui |
-| Drag and drop | @dnd-kit |
-| Backend | Python 3.11+ with asyncio |
-| Database | SQLite (embedded, stored in app data) |
-| Agent runtime | Claude Agent SDK (`claude-agent-sdk`) |
-| GitHub API | httpx (no `gh` CLI dependency) |
-| IPC | JSON-RPC over stdio between Electron and Python |
-
----
-
 ## Future Roadmap
 
 - Interactive terminal for watching agent sessions in real time (PTY-based)
