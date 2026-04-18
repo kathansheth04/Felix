@@ -1,5 +1,14 @@
 # Felix
 
+![Electron](https://img.shields.io/badge/Electron-2B2E3A?style=for-the-badge&logo=electron&logoColor=9FEAF9)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Claude](https://img.shields.io/badge/Claude_Agent_SDK-D97757?style=for-the-badge&logo=anthropic&logoColor=white)
+
 Felix is a desktop application that turns a Kanban board into an autonomous software development pipeline. You create tickets describing engineering tasks, move them to **In Progress**, and an AI coding agent takes over. It plans, writes tests, implements the code, commits the changes, and opens a pull request on GitHub. You come back to review the PR.
 
 Built with Electron, React, and Python, Felix runs entirely on your local machine with direct access to your filesystem and Git repositories.
